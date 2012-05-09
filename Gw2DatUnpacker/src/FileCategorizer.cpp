@@ -116,6 +116,12 @@ wxFileName FileCategorizer::Categorize(const wxString& pOutPath, ANetFileType pF
         fileName.AppendDir(wxT("EULA"));
         fileName.SetFullName(wxString::Format(wxT("%d.eula"), pFileId));
     }
+	
+	// Cinematic
+	else if (pFileType == ANFT_Cinematic) {
+		fileName.AppendDir(wxT("Cinematics"));
+        fileName.SetFullName(wxString::Format(wxT("%d.cinp"), pFileId));
+	}
 
     // Havok
     else if (pFileType == ANFT_HavokCloth) {
