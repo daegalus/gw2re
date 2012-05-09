@@ -1,0 +1,39 @@
+
+Gw2DatUnpacker r1
+
+== Authors ==
+
+Rhoot: Main author.
+Loumie: Decompression code.
+
+
+== Description ==
+
+Unpacks all files found in the input .dat file and sorts them into directories
+depending on file type.
+
+
+== Usage ==
+
+It can be started as:
+
+  Gw2DatUnpacker -i <input dat> -o <output path>
+
+If no input dat is given, the program will ask for it. Same goes for the output
+path.
+
+
+== Libraries and restrictions ==
+
+The application *may* run under Linux on little endian systems. It probably
+will not run in OSX unless they recently switched to little endian systems
+as well.
+
+Required libraries:
+* wxWidgets
+
+Optional libraries:
+* Visual Leak Detector
+
+If you do not want to use Visual Leak Detector, remove the include for vld.h
+in Gw2DatUnpacker.cpp.
