@@ -8,11 +8,11 @@ The way this will be laid out, is each project will get a folder to put all thei
 
 Ex: Lets say you have a new GW2 DAT Unpacker, and you call it GW2Inflator. You would do something like this:
 
-> /GW2Inflator
- . README
- . GW2Inflator.c
- . GW2Inflator.h
- . /lib
+	/GW2Inflator
+	. README
+	. GW2Inflator.c
+	. GW2Inflator.h
+	. /lib
 
 A README is required in every project folder with the following minimum:
 Credits to everyone that worked on it. If you added something, add your name to the credits.
