@@ -184,7 +184,7 @@ uint8_t* gdtInflate_impl(uint32_t* i_input, uint32_t i_inputSize, uint32_t* io_o
         return NULL;
     }
 
-    uint8_t* l_output = new uint8_t(l_outputSize);
+    uint8_t* l_output = new uint8_t[l_outputSize];
 
     if (gdt::inflate::inflate_data(&l_state, l_output, l_outputSize, &l_huffmanTreeDict) != GDTINFLATE_OK_RES)
     {
