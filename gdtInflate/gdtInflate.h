@@ -20,6 +20,8 @@ extern "C" {
 /** @Inputs:
  *    - i_input: Pointer to the buffer to inflate
  *    - i_inputSize: Size of the input buffer
+ *    - io_outputSize: if the value pointed by io_outputSize is 0 then we decode everything
+ *                     else we decode until we reach the outputSize
  *  @Outputs:
  *    - io_outputSize: Pointer to the size of the outputBuffer
  *  @Return:

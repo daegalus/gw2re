@@ -177,6 +177,16 @@ uint8_t* gdtInflate_impl(uint32_t* i_input, uint32_t i_inputSize, uint32_t* io_o
 
     // Getting size of the uncompressed data
     uint32_t l_outputSize = GDTINFLATE_READBITS(l_state, 32);
+
+	if (*io_outputSize != 0)
+	{
+		// We do not take max here as we won't be able to have more than the output available
+		if (l_outputSize > *io_outputSize)
+		{
+			l_outputSize = *io_outputSize;
+		}
+	}
+
     if (gdt::inflate::dropBits(&l_state, 32) != GDTINFLATE_OK_RES)
     {
         printf("gw2Inflate: Error while reading the first eight bytes of the file.\n");
