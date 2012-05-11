@@ -7,4 +7,4 @@ syntax: regexp
 # coreTools
 ^coreTools/dll
 ^coreTools/prj/(Debug|Release|ipch)/
-^coreTools/prj/.+?\.(user|sdf|suo)
+^coreTools/prj/.+?\.(user|sdf|suo|opensdf)
