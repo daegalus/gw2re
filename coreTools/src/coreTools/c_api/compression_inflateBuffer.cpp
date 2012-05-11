@@ -1,4 +1,4 @@
-#include "coreTools/compression_inflateBuffer.h"
+#include "coreTools/c_api/compression_inflateBuffer.h"
 
 #include "coreTools/compression/inflateBuffer.h"
 #include "coreTools/exception/Exception.h"
@@ -7,7 +7,7 @@
 extern "C" {
 #endif 
 
-GW2RE_CORETOOLS_API uint8_t* compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize)
+GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize)
 {
     if (ioOutputSize == nullptr)
     {

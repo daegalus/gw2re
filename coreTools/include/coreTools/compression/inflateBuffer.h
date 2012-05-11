@@ -1,7 +1,7 @@
 #ifndef GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFER_H
 #define GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFER_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 
 #include "coreTools/dllMacros.h"
@@ -27,7 +27,7 @@ namespace compression
  *    - coreTools::exception::Exception in case an error is found 
  *      before trying to inflate the buffer
  */
-GW2RE_CORETOOLS_API uint8_t* inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg);
+GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg);
 
 }
 }

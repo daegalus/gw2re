@@ -2,7 +2,6 @@
 #define GW2RE_CORETOOLS_EXCEPTION_EXCEPTION_H
 
 #include <exception>
-#include <string>
 
 #include "coreTools/dllMacros.h"
 
@@ -13,15 +12,15 @@ namespace coreTools
 namespace exception
 {
 
-class Exception: public std::exception
+class GW2RE_CORETOOLS_API Exception: public std::exception
 {
     public:
-        Exception(const std::string& iReason);
+        Exception(const char* iReason);
         virtual ~Exception();
         virtual const char* what() const;
         
     private:
-        std::string _reason;
+        const char* _reason;
 };
 
 }

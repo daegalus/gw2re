@@ -78,13 +78,13 @@
   <ItemGroup>
     <ClCompile Include="..\src\coretools\compression\inflateBuffer.cpp" />
     <ClCompile Include="..\src\coretools\compression\inflateBufferUtils.cpp" />
-    <ClCompile Include="..\src\coreTools\compression_inflateBuffer.cpp" />
+    <ClCompile Include="..\src\coreTools\c_api\compression_inflateBuffer.cpp" />
     <ClCompile Include="..\src\coretools\dllMain.cpp" />
     <ClCompile Include="..\src\coretools\exception\Exception.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\coretools\compression\inflateBuffer.h" />
-    <ClInclude Include="..\include\coreTools\compression_inflateBuffer.h" />
+    <ClInclude Include="..\include\coreTools\c_api\compression_inflateBuffer.h" />
     <ClInclude Include="..\include\coretools\dllMacros.h" />
     <ClInclude Include="..\include\coretools\exception\Exception.h" />
     <ClInclude Include="..\src\coretools\compression\inflateBufferUtils.h" />

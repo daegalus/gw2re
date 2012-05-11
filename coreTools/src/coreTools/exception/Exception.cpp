@@ -7,7 +7,7 @@ namespace coreTools
 namespace exception
 {
 
-Exception::Exception(const std::string& iReason) :
+Exception::Exception(const char* iReason) :
     _reason(iReason)
 {
 }
@@ -18,7 +18,7 @@ Exception::~Exception()
 
 const char* Exception::what() const
 {
-    return _reason.c_str();
+    return _reason;
 }
 
 }

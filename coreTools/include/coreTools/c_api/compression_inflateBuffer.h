@@ -19,7 +19,7 @@ extern "C" {
  *  @Return:
  *    - Pointer to the outputBuffer, NULL if it failed
  */
-GW2RE_CORETOOLS_API uint8_t* compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize);
+GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize);
 
 #ifdef __cplusplus
 }

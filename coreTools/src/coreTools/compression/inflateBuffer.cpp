@@ -137,7 +137,7 @@ void inflate_data(State& ioState, uint8_t* ioOutputTab, const uint32_t iOutputSi
     }
 }
 
-GW2RE_CORETOOLS_API uint8_t* inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg)
+GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg)
 {
     if (iInputTab == nullptr)
     {

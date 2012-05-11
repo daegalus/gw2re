@@ -3,7 +3,7 @@
 
 #include "coreTools/exception/Exception.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace gw2re
 {

@@ -27,7 +27,7 @@
     <ClCompile Include="..\src\coretools\exception\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\coreTools\compression_inflateBuffer.cpp">
+    <ClCompile Include="..\src\coreTools\c_api\compression_inflateBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClInclude Include="..\src\coretools\compression\inflateBufferUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\coreTools\compression_inflateBuffer.h">
+    <ClInclude Include="..\include\coreTools\c_api\compression_inflateBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
