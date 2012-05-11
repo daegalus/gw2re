@@ -1,0 +1,19 @@
+
+coreTools
+
+== Authors ==
+
+Loumie: compression/inflateBuffer.
+Rafi: Initial disassembly on compression/inflateBuffer.
+
+== Description ==
+
+Collection of tools to make building programs for the gw2Dats easier.
+
+== Usage ==
+
+Use the C++ or the C api of this DLL.
+
+== Libraries and restrictions ==
+
+No libraries but make the assumption that you're working on a Little Endian environment.
