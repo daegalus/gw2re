@@ -1,8 +1,6 @@
-#include "coreTools/exception/Exception.h"
+#include "gw2DatTools/exception/Exception.h"
 
-namespace gw2re
-{
-namespace coreTools
+namespace gw2dt
 {
 namespace exception
 {
@@ -21,6 +19,5 @@ const char* Exception::what() const
     return _reason;
 }
 
-}
 }
 }

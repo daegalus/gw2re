@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\coretools\dllMain.cpp">
+    <ClCompile Include="..\src\gw2DatTools\dllMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\coretools\compression\inflateBuffer.cpp">
+    <ClCompile Include="..\src\gw2DatTools\compression\inflateBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\coretools\compression\inflateBufferUtils.cpp">
+    <ClCompile Include="..\src\gw2DatTools\compression\inflateBufferUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\coretools\exception\Exception.cpp">
+    <ClCompile Include="..\src\gw2DatTools\exception\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\coreTools\c_api\compression_inflateBuffer.cpp">
+    <ClCompile Include="..\src\gw2DatTools\c_api\compression_inflateBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\coretools\dllMacros.h">
+    <ClInclude Include="..\include\gw2DatTools\dllMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\coretools\compression\inflateBuffer.h">
+    <ClInclude Include="..\include\gw2DatTools\compression\inflateBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\coretools\exception\Exception.h">
+    <ClInclude Include="..\include\gw2DatTools\exception\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\coretools\compression\inflateBufferUtils.h">
+    <ClInclude Include="..\src\gw2DatTools\compression\inflateBufferUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\coreTools\c_api\compression_inflateBuffer.h">
+    <ClInclude Include="..\include\gw2DatTools\c_api\compression_inflateBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

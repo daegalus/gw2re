@@ -1,13 +1,11 @@
-#ifndef GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFERUTILS_H
-#define GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFERUTILS_H
+#ifndef GW2DATTOOLS_COMPRESSION_INFLATEBUFFERUTILS_H
+#define GW2DATTOOLS_COMPRESSION_INFLATEBUFFERUTILS_H
 
-#include "coreTools/exception/Exception.h"
+#include "gw2DatTools/exception/Exception.h"
 
 #include <cstdint>
 
-namespace gw2re
-{
-namespace coreTools
+namespace gw2dt
 {
 namespace compression
 {
@@ -136,6 +134,5 @@ void initializeHuffmanTreeDict();
 
 }
 }
-}
 
-#endif // GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFERUTILS_H
+#endif // GW2DATTOOLS_COMPRESSION_INFLATEBUFFERUTILS_H

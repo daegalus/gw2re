@@ -1,5 +1,5 @@
 
-coreTools
+gw2DatTools
 
 == Authors ==
 
@@ -8,11 +8,11 @@ Rafi: Initial disassembly on compression/inflateBuffer.
 
 == Description ==
 
-Collection of tools to make building programs for the gw2Dats easier.
+Collection of tools to make building programs for the gw2Dat easier.
 
 == Usage ==
 
-Use the C++ or the C api of this DLL.
+Use the C++ or the C api (in the include/c_api folder) of this DLL.
 
 == Libraries and restrictions ==
 

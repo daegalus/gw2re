@@ -2,9 +2,7 @@
 
 #include <memory.h>
 
-namespace gw2re
-{
-namespace coreTools
+namespace gw2dt
 {
 namespace compression
 {
@@ -429,6 +427,5 @@ void initializeHuffmanTreeDict()
     return buildHuffmanTree(HuffmanTreeDict, &aWorkingBitTab[0], &aWorkingCodeTab[0]);
 }
 
-}
 }
 }

@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GW2RE_CORETOOLS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GW2DATTOOLS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -61,7 +61,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GW2RE_CORETOOLS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GW2DATTOOLS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -76,18 +76,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\coretools\compression\inflateBuffer.cpp" />
-    <ClCompile Include="..\src\coretools\compression\inflateBufferUtils.cpp" />
-    <ClCompile Include="..\src\coreTools\c_api\compression_inflateBuffer.cpp" />
-    <ClCompile Include="..\src\coretools\dllMain.cpp" />
-    <ClCompile Include="..\src\coretools\exception\Exception.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\compression\inflateBuffer.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\compression\inflateBufferUtils.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\c_api\compression_inflateBuffer.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\dllMain.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\exception\Exception.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\coretools\compression\inflateBuffer.h" />
-    <ClInclude Include="..\include\coreTools\c_api\compression_inflateBuffer.h" />
-    <ClInclude Include="..\include\coretools\dllMacros.h" />
-    <ClInclude Include="..\include\coretools\exception\Exception.h" />
-    <ClInclude Include="..\src\coretools\compression\inflateBufferUtils.h" />
+    <ClInclude Include="..\include\gw2DatTools\compression\inflateBuffer.h" />
+    <ClInclude Include="..\include\gw2DatTools\c_api\compression_inflateBuffer.h" />
+    <ClInclude Include="..\include\gw2DatTools\dllMacros.h" />
+    <ClInclude Include="..\include\gw2DatTools\exception\Exception.h" />
+    <ClInclude Include="..\src\gw2DatTools\compression\inflateBufferUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

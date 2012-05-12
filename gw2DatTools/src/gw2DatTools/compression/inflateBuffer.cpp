@@ -1,14 +1,12 @@
-#include "coreTools/compression/inflateBuffer.h"
+#include "gw2DatTools/compression/inflateBuffer.h"
 
 #include <memory.h>
 
-#include "coreTools/exception/Exception.h"
+#include "gw2DatTools/exception/Exception.h"
 
 #include "inflateBufferUtils.h"
 
-namespace gw2re
-{
-namespace coreTools
+namespace gw2dt
 {
 namespace compression
 {
@@ -137,60 +135,62 @@ void inflate_data(State& ioState, uint8_t* ioOutputTab, const uint32_t iOutputSi
     }
 }
 
-GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg)
+GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize)
 {
     if (iInputTab == nullptr)
     {
         throw exception::Exception("Input buffer is null.");
     }
+	
+	uint8_t* anOutputTab = nullptr;
 
-    // Initialize state
-    State aState;
-    aState.input = iInputTab;
-    aState.inputSize = iInputSize;
-    aState.inputPos = 0;
+	try
+	{
+		// Initialize state
+		State aState;
+		aState.input = iInputTab;
+		aState.inputSize = iInputSize;
+		aState.inputPos = 0;
 
-    aState.head = 0;
-    aState.bits = 0;
-    aState.buffer = 0;
+		aState.head = 0;
+		aState.bits = 0;
+		aState.buffer = 0;
 
-    // Skipping header & Getting size of the uncompressed data
-    needBits(aState, 32);
-    dropBits(aState, 32);
-    
-    // Getting size of the uncompressed data
-    needBits(aState, 32);
-    uint32_t anOutputSize = readBits(aState, 32);
-    dropBits(aState, 32);
+		// Skipping header & Getting size of the uncompressed data
+		needBits(aState, 32);
+		dropBits(aState, 32);
+		
+		// Getting size of the uncompressed data
+		needBits(aState, 32);
+		uint32_t anOutputSize = readBits(aState, 32);
+		dropBits(aState, 32);
 
-    if (ioOutputSize != 0)
-    {
-        // We do not take max here as we won't be able to have more than the output available
-        if (anOutputSize > ioOutputSize)
-        {
-            anOutputSize = ioOutputSize;
-        }
-    }
-    
-    ioOutputSize = anOutputSize;
+		if (ioOutputSize != 0)
+		{
+			// We do not take max here as we won't be able to have more than the output available
+			if (anOutputSize > ioOutputSize)
+			{
+				anOutputSize = ioOutputSize;
+			}
+		}
+		
+		ioOutputSize = anOutputSize;
 
-    uint8_t* anOutputTab = new uint8_t[anOutputSize];
+		anOutputTab = new uint8_t[anOutputSize];
 
-    try
-    {
         inflate_data(aState, anOutputTab, anOutputSize);
+		
+		return anOutputTab;
     }
     catch(exception::Exception& iException)
     {
-        ioErrorMsg = iException.what();
         delete[] anOutputTab;
         anOutputTab = nullptr;
         ioOutputSize = 0;
+		
+		throw iException; // Rethrow exception
     }
-    
-    return anOutputTab;
 }
 
-}
 }
 }

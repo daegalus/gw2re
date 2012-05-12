@@ -1,14 +1,12 @@
-#ifndef GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFER_H
-#define GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFER_H
+#ifndef GW2DATTOOLS_COMPRESSION_INFLATEBUFFER_H
+#define GW2DATTOOLS_COMPRESSION_INFLATEBUFFER_H
 
 #include <cstdint>
 #include <string>
 
-#include "coreTools/dllMacros.h"
+#include "gw2DatTools/dllMacros.h"
 
-namespace gw2re
-{
-namespace coreTools
+namespace gw2dt
 {
 namespace compression
 {
@@ -24,13 +22,11 @@ namespace compression
  *  @Return:
  *    - Pointer to the outputBuffer
  *  @Throws:
- *    - coreTools::exception::Exception in case an error is found 
- *      before trying to inflate the buffer
+ *    - gw2dt::exception::Exception in case of error
  */
-GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, std::string& ioErrorMsg);
+GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize);
 
 }
 }
-}
 
-#endif // GW2RE_CORETOOLS_COMPRESSION_INFLATEBUFFER_H
+#endif // GW2DATTOOLS_COMPRESSION_INFLATEBUFFER_H

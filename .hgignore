@@ -4,7 +4,7 @@ syntax: regexp
 ^/Gw2DatUnpacker/(bin|build|prj/ipch)/
 ^/Gw2DatUnpacker/prj/.+?\.(user|sdf|suo)
 
-# coreTools
-^coreTools/dll
-^coreTools/prj/(Debug|Release|ipch)/
-^coreTools/prj/.+?\.(user|sdf|suo|opensdf)
+# gw2DatTools
+^gw2DatTools/dll
+^gw2DatTools/prj/(Debug|Release|ipch)/
+^gw2DatTools/prj/.+?\.(user|sdf|suo|opensdf)

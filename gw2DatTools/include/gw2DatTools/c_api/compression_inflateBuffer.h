@@ -1,9 +1,9 @@
-#ifndef GW2RE_CORETOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
-#define GW2RE_CORETOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
+#ifndef GW2DATTOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
+#define GW2DATTOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
 
 #include <stdint.h>
 
-#include "coreTools/dllMacros.h"
+#include "gw2DatTools/dllMacros.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,10 +19,10 @@ extern "C" {
  *  @Return:
  *    - Pointer to the outputBuffer, NULL if it failed
  */
-GW2RE_CORETOOLS_API uint8_t* GW2RE_CORETOOLS_APIENTRY compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize);
+GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize);
 
 #ifdef __cplusplus
 }
 #endif 
 
-#endif // GW2RE_CORETOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
+#endif // GW2DATTOOLS_CAPI_COMPRESSION_INFLATEBUFFER_H
