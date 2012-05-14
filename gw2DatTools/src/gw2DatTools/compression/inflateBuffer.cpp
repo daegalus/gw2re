@@ -141,54 +141,62 @@ GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab,
     {
         throw exception::Exception("Input buffer is null.");
     }
-	
-	uint8_t* anOutputTab = nullptr;
 
-	try
-	{
-		// Initialize state
-		State aState;
-		aState.input = iInputTab;
-		aState.inputSize = iInputSize;
-		aState.inputPos = 0;
+    uint8_t* anOutputTab = nullptr;
 
-		aState.head = 0;
-		aState.bits = 0;
-		aState.buffer = 0;
+    try
+    {
+        // Initialize state
+        State aState;
+        aState.input = iInputTab;
+        aState.inputSize = iInputSize;
+        aState.inputPos = 0;
 
-		// Skipping header & Getting size of the uncompressed data
-		needBits(aState, 32);
-		dropBits(aState, 32);
-		
-		// Getting size of the uncompressed data
-		needBits(aState, 32);
-		uint32_t anOutputSize = readBits(aState, 32);
-		dropBits(aState, 32);
+        aState.head = 0;
+        aState.bits = 0;
+        aState.buffer = 0;
 
-		if (ioOutputSize != 0)
-		{
-			// We do not take max here as we won't be able to have more than the output available
-			if (anOutputSize > ioOutputSize)
-			{
-				anOutputSize = ioOutputSize;
-			}
-		}
-		
-		ioOutputSize = anOutputSize;
+        // Skipping header & Getting size of the uncompressed data
+        needBits(aState, 32);
+        dropBits(aState, 32);
+        
+        // Getting size of the uncompressed data
+        needBits(aState, 32);
+        uint32_t anOutputSize = readBits(aState, 32);
+        dropBits(aState, 32);
 
-		anOutputTab = new uint8_t[anOutputSize];
+        if (ioOutputSize != 0)
+        {
+            // We do not take max here as we won't be able to have more than the output available
+            if (anOutputSize > ioOutputSize)
+            {
+                anOutputSize = ioOutputSize;
+            }
+        }
+        
+        ioOutputSize = anOutputSize;
+
+        anOutputTab = static_cast<uint8_t*>(malloc(sizeof(uint8_t) * anOutputSize));
 
         inflate_data(aState, anOutputTab, anOutputSize);
-		
-		return anOutputTab;
+        
+        return anOutputTab;
     }
     catch(exception::Exception& iException)
     {
-        delete[] anOutputTab;
+        free(anOutputTab);
         anOutputTab = nullptr;
         ioOutputSize = 0;
-		
-		throw iException; // Rethrow exception
+        
+        throw iException; // Rethrow exception
+    }
+    catch(std::exception& iException)
+    {
+        free(anOutputTab);
+        anOutputTab = nullptr;
+        ioOutputSize = 0;
+        
+        throw iException; // Rethrow exception
     }
 }
 

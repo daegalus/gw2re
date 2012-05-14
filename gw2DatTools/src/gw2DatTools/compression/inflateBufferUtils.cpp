@@ -12,6 +12,11 @@ HuffmanTree HuffmanTreeDict;
 
 void readCode(const HuffmanTree& iHuffmanTree, State& ioState, uint16_t& ioCode)
 {
+    if (iHuffmanTree.codeCompTab[0] == 0)
+    {
+        throw exception::Exception("Trying to read code from an empty HuffmanTree.");
+    }
+    
     needBits(ioState, 32);
     uint16_t anIndex = 0;
     while (readBits(ioState, 32) < iHuffmanTree.codeCompTab[anIndex])
@@ -20,8 +25,8 @@ void readCode(const HuffmanTree& iHuffmanTree, State& ioState, uint16_t& ioCode)
     }
 
     uint8_t aNbBits = iHuffmanTree.codeBitsTab[anIndex];
-    ioCode = iHuffmanTree.symbolValueTabOffsetTab[iHuffmanTree.symbolValueTabOffsetTab[anIndex] -
-                                                  ((readBits(ioState, 32) - iHuffmanTree.codeCompTab[anIndex]) >> (32 - aNbBits))];
+    ioCode = iHuffmanTree.symbolValueTab[iHuffmanTree.symbolValueTabOffsetTab[anIndex] -
+                                         ((readBits(ioState, 32) - iHuffmanTree.codeCompTab[anIndex]) >> (32 - aNbBits))];
     return dropBits(ioState, aNbBits);
 }
 
@@ -31,7 +36,7 @@ void buildHuffmanTree(HuffmanTree& ioHuffmanTree, int16_t* ioWorkingBitTab, int1
     uint32_t aCode = 0;
     uint8_t aNbBits = 0;
     uint16_t aCodeCompTabIndex = 0;
-    uint16_t aSynbolOffset = 0;
+    uint16_t aSymbolOffset = 0;
 
     while (aNbBits < MaxCodeBitsLength)
     {
@@ -41,9 +46,9 @@ void buildHuffmanTree(HuffmanTree& ioHuffmanTree, int16_t* ioWorkingBitTab, int1
             while (aCurrentSymbol != -1)
             {
                 // Registering the code
-                ioHuffmanTree.symbolValueTab[aSynbolOffset] = aCurrentSymbol;
+                ioHuffmanTree.symbolValueTab[aSymbolOffset] = aCurrentSymbol;
 
-                ++aSynbolOffset;
+                ++aSymbolOffset;
                 aCurrentSymbol = ioWorkingCodeTab[aCurrentSymbol];
                 --aCode;
             }
@@ -55,7 +60,7 @@ void buildHuffmanTree(HuffmanTree& ioHuffmanTree, int16_t* ioWorkingBitTab, int1
             ioHuffmanTree.codeBitsTab[aCodeCompTabIndex] = aNbBits;
 
             // Offset in symbolValueTab table to reach the value
-            ioHuffmanTree.symbolValueTabOffsetTab[aCodeCompTabIndex] = aSynbolOffset - 1;
+            ioHuffmanTree.symbolValueTabOffsetTab[aCodeCompTabIndex] = aSymbolOffset - 1;
 
             ++aCodeCompTabIndex;
         }
