@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\gw2DatTools">
+      <UniqueIdentifier>{2726ef08-6096-4c90-80d0-4476ceb8dd49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gw2DatTools">
+      <UniqueIdentifier>{b6b81e3c-8a42-423b-b1fa-ad0cb7c8d249}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Gw2DatUnpacker.h">
@@ -27,17 +33,17 @@
     <ClInclude Include="..\src\ANetStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\UnpackProgress.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\FileCategorizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gw2Inflate.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\gw2DatTools\Exception.h">
+      <Filter>Header Files\gw2DatTools</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\utils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\gw2DatTools\inflateBuffer.h">
+      <Filter>Header Files\gw2DatTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gw2DatTools\inflateBufferUtils.h">
+      <Filter>Header Files\gw2DatTools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,17 +56,17 @@
     <ClCompile Include="..\src\Gw2Dat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\UnpackProgress.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\FileCategorizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gw2Inflate.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\gw2DatTools\Exception.cpp">
+      <Filter>Source Files\gw2DatTools</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\gw2DatTools\inflateBuffer.cpp">
+      <Filter>Source Files\gw2DatTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gw2DatTools\inflateBufferUtils.cpp">
+      <Filter>Source Files\gw2DatTools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,7 +13,8 @@ namespace gw2du
 IMPLEMENT_APP(Gw2DatUnpacker);
 
 Gw2DatUnpacker::Gw2DatUnpacker()
-    : mProgress(NULL), mCurrentEntry(0)
+    : mProgress(NULL)
+    , mCurrentEntry(0)
 {
 }
 

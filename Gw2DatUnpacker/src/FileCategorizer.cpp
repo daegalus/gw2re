@@ -69,6 +69,7 @@ wxFileName FileCategorizer::Categorize(const wxString& pOutPath, ANetFileType pF
         }
     }
 
+    // Binaries
     else if (pFileType == ANFT_Binary || pFileType == ANFT_EXE || pFileType == ANFT_DLL) {
         fileName.AppendDir(wxT("Binaries"));
         
@@ -84,6 +85,27 @@ wxFileName FileCategorizer::Categorize(const wxString& pOutPath, ANetFileType pF
     // Strings
     else if (pFileType == ANFT_StringFile) {
         fileName.AppendDir(wxT("Strings"));
+
+        if (pSize > 1) {
+            switch (pData[pSize-2]) {
+            case 0:
+                fileName.AppendDir(wxT("English"));
+                break;
+            case 1:
+                fileName.AppendDir(wxT("Korean"));
+                break;
+            case 2:
+                fileName.AppendDir(wxT("French"));
+                break;
+            case 3:
+                fileName.AppendDir(wxT("German"));
+                break;
+            case 4:
+                fileName.AppendDir(wxT("Spanish"));
+                break;
+            }
+        }
+
         fileName.SetFullName(wxString::Format(wxT("%d.strs"), pFileId));
     }
 

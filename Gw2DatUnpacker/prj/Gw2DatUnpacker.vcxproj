@@ -14,23 +14,23 @@
     <ClInclude Include="..\src\ANetStructs.h" />
     <ClInclude Include="..\src\FileCategorizer.h" />
     <ClInclude Include="..\src\Gw2Dat.h" />
+    <ClInclude Include="..\src\gw2DatTools\Exception.h" />
+    <ClInclude Include="..\src\gw2DatTools\inflateBuffer.h" />
+    <ClInclude Include="..\src\gw2DatTools\inflateBufferUtils.h" />
     <ClInclude Include="..\src\Gw2DatUnpacker.h" />
-    <ClInclude Include="..\src\gw2Inflate.h" />
-    <ClInclude Include="..\src\UnpackProgress.h" />
     <ClInclude Include="..\src\stdafx.h" />
-    <ClInclude Include="..\src\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FileCategorizer.cpp" />
     <ClCompile Include="..\src\Gw2Dat.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\Exception.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\inflateBuffer.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\inflateBufferUtils.cpp" />
     <ClCompile Include="..\src\Gw2DatUnpacker.cpp" />
-    <ClCompile Include="..\src\gw2Inflate.cpp" />
     <ClCompile Include="..\src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\src\UnpackProgress.cpp" />
-    <ClCompile Include="..\src\utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CB536AF9-593F-47E9-B5F9-6DF09ED3BED2}</ProjectGuid>
@@ -77,6 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,6 +97,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

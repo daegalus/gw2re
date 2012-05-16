@@ -2,13 +2,18 @@
 
 #include "stdafx.h"
 #include "Gw2Dat.h"
-#include "gw2Inflate.h"
+#include "gw2DatTools/inflateBuffer.h"
+#include "gw2DatTools/Exception.h"
 
 namespace gw2du
 {
 
 Gw2Dat::Gw2Dat()
-    : mMftEntries(NULL), mFileIdEntries(NULL), mNumFileIdEntries(0)
+    : mMftEntries(NULL)
+    , mFileIdEntries(NULL)
+    , mNumFileIdEntries(0)
+    , mInputBuffer(NULL)
+    , mInputBufferSize(0)
 {
     ::memset(&mDatHead, 0, sizeof(mDatHead));
     ::memset(&mMftHead, 0, sizeof(mMftHead));
@@ -71,9 +76,11 @@ bool Gw2Dat::IsOpen() const
 
 void Gw2Dat::Close()
 {
+    mInputBufferSize = 0;
     mNumFileIdEntries = 0;
     ::memset(&mDatHead, 0, sizeof(mDatHead));
     ::memset(&mMftHead, 0, sizeof(mMftHead));
+    FreePointer(mInputBuffer);
     FreePointer(mFileIdEntries);
     FreePointer(mMftEntries);
     mFile.Close();
@@ -125,18 +132,31 @@ ANetFileType Gw2Dat::ReadFile(int pEntryNum, byte*& pBufferPtr, uint& pSize)
     }
 
     uint inputSize = mMftEntries[pEntryNum].mSize;
-    byte* input = new byte[inputSize];
+
+    if (mInputBuffer == NULL || mInputBufferSize < inputSize) {
+        FreePointer(mInputBuffer);
+        mInputBuffer     = (byte*)::malloc(inputSize);
+        mInputBufferSize = inputSize;
+    }
+
     mFile.Seek(mMftEntries[pEntryNum].mOffset, wxFromStart);
-    mFile.Read(input, inputSize);
+    mFile.Read(mInputBuffer, inputSize);
 
     if (mMftEntries[pEntryNum].mCompressionFlag) {
-        uint32 size;
-        pBufferPtr = inflate(input, inputSize, size);
-        DeleteArray(input);
-        pSize = size;
+        uint32 size = 0;
+
+        try {
+            pBufferPtr = gw2dt::compression::inflateBuffer((uint32_t*)mInputBuffer, inputSize, size);
+            pSize      = size;
+        } catch (gw2dt::exception::Exception& e) {
+            pBufferPtr = NULL;
+            pSize      = 0;
+            return ANFT_Unknown;
+        } 
     } else {
+        pBufferPtr = (byte*)::malloc(inputSize);
         pSize      = inputSize;
-        pBufferPtr = input;
+        ::memcpy(pBufferPtr, mInputBuffer, inputSize);
     }
 
     return IdentifyFileType(pBufferPtr, pSize);

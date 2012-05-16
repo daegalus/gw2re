@@ -19,6 +19,8 @@ class Gw2Dat
     ANetMftEntry*       mMftEntries;
     ANetFileIdEntry*    mFileIdEntries;
     uint                mNumFileIdEntries;
+    byte*               mInputBuffer;
+    uint                mInputBufferSize;
     
 public:
     Gw2Dat();
