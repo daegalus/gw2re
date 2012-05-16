@@ -15,10 +15,6 @@ class GW2DATTOOLS_API Exception: public std::exception
     public:
         Exception(const char* iReason);
         virtual ~Exception();
-        virtual const char* what() const;
-        
-    private:
-        const char* _reason;
 };
 
 }

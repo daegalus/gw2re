@@ -1,7 +1,8 @@
 #include "gw2DatTools/c_api/compression_inflateBuffer.h"
 
+#include <exception>
+
 #include "gw2DatTools/compression/inflateBuffer.h"
-#include "gw2DatTools/exception/Exception.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,7 +20,7 @@ GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY compression_inflateBuffer(uint32_t
     {
         return gw2dt::compression::inflateBuffer(iInputTab, iInputSize, *ioOutputSize);
     }
-    catch(gw2dt::exception::Exception& iException)
+    catch(std::exception& iException)
     {
         printf("GW2DATTOOLS_C_API(compression_inflateBuffer): %s", iException.what());
         return NULL;

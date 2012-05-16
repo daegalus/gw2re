@@ -6,17 +6,12 @@ namespace exception
 {
 
 Exception::Exception(const char* iReason) :
-    _reason(iReason)
+    std::exception(iReason)
 {
 }
 
 Exception::~Exception()
 {
-}
-
-const char* Exception::what() const
-{
-    return _reason;
 }
 
 }
