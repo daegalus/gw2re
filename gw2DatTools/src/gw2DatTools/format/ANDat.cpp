@@ -1,23 +1,23 @@
 #include "ANDat.h"
 
+#include <istream>
+
 #include "Utils.h"
 
 namespace gw2dt
 {
-namespace formats
+namespace format
 {
 
-std::unique_ptr<ANDat>&& parseANDat(std::istream& iStream, const uint64_t& iOffset, const uint32_t iSize);
+std::unique_ptr<ANDat> parseANDat(std::istream& iStream, const uint64_t& iOffset, const uint32_t iSize)
 {
-    iStream.seek(iOffset);
+    iStream.seekg(iOffset, std::ios::beg);
     
     std::unique_ptr<ANDat> pANDat(new ANDat());
-    readStruct(iStream, pANDat->header);
-    
+    readStructs(iStream, pANDat->header);
+
     return std::move(pANDat);
 }
 
 }
 }
-
-#endif // GW2DATTOOLS_FORMATS_ANDAT_H

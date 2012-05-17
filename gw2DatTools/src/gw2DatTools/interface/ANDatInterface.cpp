@@ -1,8 +1,14 @@
 #include "gw2DatTools/interface/ANDatInterface.h"
 
-#include "../formats/ANDat.h"
-#include "../formats/Mft.h"
-#include "../formats/Mapping.h"
+#include <fstream>
+#include <unordered_map>
+
+#include "gw2DatTools/exception/Exception.h"
+
+#include "../format/ANDat.h"
+#include "../format/Mft.h"
+#include "../format/Mapping.h"
+#include "../format/Utils.h"
 
 namespace gw2dt
 {
@@ -12,11 +18,10 @@ namespace interface
 class ANDatInterfaceImpl : public ANDatInterface
 {
     public:
-        ANDatInterfaceImpl(const char* iDatPath, std::unique_ptr<Mft>& ipMft, std::unique_ptr<Mapping>& ipMapping);
+        ANDatInterfaceImpl(const char* iDatPath, std::unique_ptr<format::Mft>& ipMft, std::unique_ptr<format::Mapping>& ipMapping);
         virtual ~ANDatInterfaceImpl();
         
-        virtual uint8_t* getBuffer(const FileRecord& iFileRecord, const uint32_t& ioOutputSize) const;
-        virtual void getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, const uint32_t& ioOutputSize) const;
+        virtual void getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, uint32_t& ioOutputSize);
         
         virtual const FileRecord& getFileRecordForFileId(const uint32_t& iFileId) const;
         virtual const FileRecord& getFileRecordForBaseId(const uint32_t& iBaseId) const;
@@ -36,11 +41,11 @@ class ANDatInterfaceImpl : public ANDatInterface
         std::vector<FileRecord> _fileRecordVect;
         
         // Raw data structures
-        std::unique_ptr<Mft> _pMft;
-        std::unique_ptr<Mapping> _pMapping;
+        std::unique_ptr<format::Mft> _pMft;
+        std::unique_ptr<format::Mapping> _pMapping;
 };
 
-ANDatInterfaceImpl::ANDatInterfaceImpl(const char* iDatPath, std::unique_ptr<Mft>& ipMft, std::unique_ptr<Mapping>& ipMapping);
+ANDatInterfaceImpl::ANDatInterfaceImpl(const char* iDatPath, std::unique_ptr<format::Mft>& ipMft, std::unique_ptr<format::Mapping>& ipMapping) :
     _datStream(iDatPath, std::ios::binary),
     _pMft(std::move(ipMft)),
     _pMapping(std::move(ipMapping))
@@ -51,21 +56,11 @@ ANDatInterfaceImpl::~ANDatInterfaceImpl()
 {
 }
 
-uint8_t* ANDatInterfaceImpl::getBuffer(const ANDatInterface::FileRecord& iFileRecord, const uint32_t& ioOutputSize) const
+void ANDatInterfaceImpl::getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, uint32_t& ioOutputSize)
 {
-    _datStream.seek(iFileRecord.offset);
+    _datStream.seekg(iFileRecord.offset);
     ioOutputSize = std::min(ioOutputSize, iFileRecord.size);
-    uint8_t* anOriginalTab = static_cast<uint8_t*>(malloc(ioOutputSize));
-    readNStruct(_datStream, *anOriginalTab, ioOutputSize);
-    return anOriginalTab;
-}
-
-void ANDatInterfaceImpl::getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, const uint32_t& ioOutputSize) const
-{
-    _datStream.seek(iFileRecord.offset);
-    ioOutputSize = std::min(ioOutputSize, iFileRecord.size);
-    readNStruct(_datStream, *ioBuffer, ioOutputSize);
-    return anOriginalTab;
+    format::readStructs(_datStream, *ioBuffer, ioOutputSize);
 }
 
 const ANDatInterface::FileRecord& ANDatInterfaceImpl::getFileRecordForFileId(const uint32_t& iFileId) const
@@ -79,12 +74,12 @@ const ANDatInterface::FileRecord& ANDatInterfaceImpl::getFileRecordForFileId(con
         }
         else
         {
-            // TODO
+            throw exception::Exception("FileId found, but null entry.");
         }
     }
     else
     {
-        // TODO
+        throw exception::Exception("FileId not found.");
     }
 }
 
@@ -99,12 +94,12 @@ const ANDatInterface::FileRecord& ANDatInterfaceImpl::getFileRecordForBaseId(con
         }
         else
         {
-            // TODO
+            throw exception::Exception("BaseId found, but null entry.");
         }
     }
     else
     {
-        // TODO
+        throw exception::Exception("BaseId not found.");
     }
 }
 
@@ -119,13 +114,14 @@ void ANDatInterfaceImpl::computeInternalData()
     _baseIdDict.clear();
     _fileRecordVect.clear();
     
-    _fileRecordVect.resize(pMapping.entries.size());
+    _fileRecordVect.resize(_pMapping->entries.size());
     
     std::unordered_map<uint32_t, FileRecord*> aMftIndexDictHelper;
+    aMftIndexDictHelper.rehash(_pMapping->entries.size());
     
     uint32_t aCurrentIndex(0);
     
-    for (auto itMapping = pMapping.entries.begin(); itMapping != pMapping.entries.end(); ++itMapping)
+    for (auto itMapping = _pMapping->entries.begin(); itMapping != _pMapping->entries.end(); ++itMapping)
     {
         if (itMapping->mftIndex == 0 && itMapping->id == 0)
         {
@@ -152,12 +148,12 @@ void ANDatInterfaceImpl::computeInternalData()
             {
                 FileRecord& aFileRecord = _fileRecordVect[aCurrentIndex];
                 ++aCurrentIndex;
-                MftEntry& aMftEntry = _pMft->entries[itMapping->mftIndex];
+                format::MftEntry& aMftEntry = _pMft->entries[itMapping->mftIndex - 1];
                 
                 aFileRecord.offset = aMftEntry.offset;
                 aFileRecord.size = aMftEntry.size;
                 
-                aFileRecord.baseId = 0
+                aFileRecord.baseId = 0;
                 aFileRecord.fileId = itMapping->id;
                 
                 aFileRecord.isCompressed = (aMftEntry.compressionFlag != 0);
@@ -170,6 +166,10 @@ void ANDatInterfaceImpl::computeInternalData()
     // Dropping the unecessary entries
     _fileRecordVect.resize(aCurrentIndex);
     
+    // Reserving space for dicts
+    _fileIdDict.rehash(_fileRecordVect.size());
+    _baseIdDict.rehash(_fileRecordVect.size());
+    
     for (auto itFileRecord = _fileRecordVect.begin(); itFileRecord != _fileRecordVect.end(); ++itFileRecord)
     {
         _fileIdDict.insert(std::make_pair(itFileRecord->fileId, &(*itFileRecord)));
@@ -181,18 +181,18 @@ void ANDatInterfaceImpl::computeInternalData()
     }
 }
 
-std::unique_ptr<ANDatInterface>&& createANDatInterface(const char* iDatPath)
+GW2DATTOOLS_API std::unique_ptr<ANDatInterface> GW2DATTOOLS_APIENTRY createANDatInterface(const char* iDatPath)
 {
     std::ifstream aDatStream(iDatPath, std::ios::binary);
     auto pANDat = format::parseANDat(aDatStream, 0, 0);
     
-    auto pMft = pANDat::parseMft(iDatStream, pANDat->header.mftOffset, pANDat->header.mftSize);
-    auto pMapping = pANDat::parseMapping(iDatStream, pMft->entries[2].offset, pMft->entries[2].size);
+    auto pMft = format::parseMft(aDatStream, pANDat->header.mftOffset, pANDat->header.mftSize);
+    auto pMapping = format::parseMapping(aDatStream, pMft->entries[1].offset, pMft->entries[1].size);
     
     auto pANDatInterfaceImpl = std::unique_ptr<ANDatInterfaceImpl>(new ANDatInterfaceImpl(iDatPath, pMft, pMapping));
     pANDatInterfaceImpl->computeInternalData();
     
-    return std::static_pointer_cast<ANDatInterface>(pANDatInterfaceImpl);
+    return std::move(pANDatInterfaceImpl);
 }
 
 }

@@ -8,7 +8,7 @@
 extern "C" {
 #endif 
 
-GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY compression_inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize)
+GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY compression_inflateBuffer(uint8_t* iInputTab, const uint32_t iInputSize, uint32_t* ioOutputSize)
 {
     if (ioOutputSize == nullptr)
     {

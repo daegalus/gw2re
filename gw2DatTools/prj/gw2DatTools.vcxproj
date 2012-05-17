@@ -34,11 +34,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\..\dll\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\..\dll\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -81,13 +81,22 @@
     <ClCompile Include="..\src\gw2DatTools\c_api\compression_inflateBuffer.cpp" />
     <ClCompile Include="..\src\gw2DatTools\dllMain.cpp" />
     <ClCompile Include="..\src\gw2DatTools\exception\Exception.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\format\ANDat.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\format\Mapping.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\format\Mft.cpp" />
+    <ClCompile Include="..\src\gw2DatTools\interface\ANDatInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\gw2DatTools\compression\inflateBuffer.h" />
     <ClInclude Include="..\include\gw2DatTools\c_api\compression_inflateBuffer.h" />
     <ClInclude Include="..\include\gw2DatTools\dllMacros.h" />
     <ClInclude Include="..\include\gw2DatTools\exception\Exception.h" />
+    <ClInclude Include="..\include\gw2DatTools\interface\ANDatInterface.h" />
     <ClInclude Include="..\src\gw2DatTools\compression\inflateBufferUtils.h" />
+    <ClInclude Include="..\src\gw2DatTools\format\ANDat.h" />
+    <ClInclude Include="..\src\gw2DatTools\format\Mapping.h" />
+    <ClInclude Include="..\src\gw2DatTools\format\Mft.h" />
+    <ClInclude Include="..\src\gw2DatTools\format\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

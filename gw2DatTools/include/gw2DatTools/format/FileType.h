@@ -8,9 +8,9 @@ namespace gw2dt
 namespace format
 {
 
-enum class GW2DATTOOLS_API FileType : uint8_t
+enum GW2DATTOOLS_API FileType
 {
-    Unknown = 0,
+    FT_Unknown = 0
 };
 
 }

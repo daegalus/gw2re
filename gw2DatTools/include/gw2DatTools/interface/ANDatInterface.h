@@ -1,7 +1,11 @@
 #ifndef GW2DATTOOLS_INTERFACE_ANDATINTERFACE_H
 #define GW2DATTOOLS_INTERFACE_ANDATINTERFACE_H
 
+#include <cstdint>
+#include <vector>
+
 #include "gw2DatTools/dllMacros.h"
+#include "gw2DatTools/format/FileType.h"
 
 namespace gw2dt
 {
@@ -22,20 +26,17 @@ class GW2DATTOOLS_API ANDatInterface
             bool isCompressed;
         };
         
-        virtual ~ANDatInterface() {} = 0;
+        virtual ~ANDatInterface() {};
         
-        virtual uint8_t* getBuffer(const FileRecord& iFileRecord, const uint32_t& ioOutputSize) const = 0;
-        virtual void getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, const uint32_t& ioOutputSize) const = 0;
+        virtual void getBuffer(const ANDatInterface::FileRecord& iFileRecord, uint8_t* ioBuffer, uint32_t& ioOutputSize) = 0;
         
         virtual const FileRecord& getFileRecordForFileId(const uint32_t& iFileId) const = 0;
         virtual const FileRecord& getFileRecordForBaseId(const uint32_t& iBaseId) const = 0;
         
         virtual const std::vector<FileRecord>& getFileRecordVect() const = 0;
-        
-        virtual const FileType retrieveFileType(const FileRecord& iFileRecord) = 0;
 };
 
-std::unique_ptr<ANDatInterface>&& createANDatInterface(const char* iDatPath);
+GW2DATTOOLS_API std::unique_ptr<ANDatInterface> GW2DATTOOLS_APIENTRY createANDatInterface(const char* iDatPath);
 
 }
 }

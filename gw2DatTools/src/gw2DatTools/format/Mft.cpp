@@ -1,21 +1,23 @@
 #include "Mft.h"
 
+#include <istream>
+
 #include "Utils.h"
 
 namespace gw2dt
 {
-namespace formats
+namespace format
 {
 
-std::unique_ptr<Mft>&& parseMft(std::istream& iStream, const uint64_t& iOffset, const uint32_t iSize)
+std::unique_ptr<Mft> parseMft(std::istream& iStream, const uint64_t& iOffset, const uint32_t iSize)
 {
-    iStream.seek(iOffset);
+    iStream.seekg(iOffset, std::ios::beg);
     
     std::unique_ptr<Mft> pMft(new Mft());
-    readStruct(iStream, pMft->header);
+    readStructs(iStream, pMft->header);
     
-    pMft->entries.resize(pMft->header.mbOfEntries - 1);
-    readStruct(iStream, pMft->entries);
+    pMft->entries.resize(pMft->header.nbOfEntries - 1);
+    readStructVect(iStream, pMft->entries);
     
     return std::move(pMft);
 }

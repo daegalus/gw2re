@@ -135,21 +135,22 @@ void inflate_data(State& ioState, uint8_t* ioOutputTab, const uint32_t iOutputSi
     }
 }
 
-GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize)
+GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint8_t* iInputTab, const uint32_t iInputSize, uint32_t& ioOutputSize, uint8_t* ioOuputTab)
 {
     if (iInputTab == nullptr)
     {
         throw exception::Exception("Input buffer is null.");
     }
 
-    uint8_t* anOutputTab = nullptr;
+    uint8_t* anOutputTab(nullptr);
+	bool isOutputTabOwned(true);
 
     try
     {
         // Initialize state
         State aState;
-        aState.input = iInputTab;
-        aState.inputSize = iInputSize;
+        aState.input = reinterpret_cast<uint32_t*>(iInputTab);
+        aState.inputSize = iInputSize / 4;
         aState.inputPos = 0;
 
         aState.head = 0;
@@ -167,35 +168,31 @@ GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint32_t* iInputTab,
 
         if (ioOutputSize != 0)
         {
-            // We do not take max here as we won't be able to have more than the output available
-            if (anOutputSize > ioOutputSize)
-            {
-                anOutputSize = ioOutputSize;
-            }
+			anOutputSize = std::min(anOutputSize, ioOutputSize);
         }
         
         ioOutputSize = anOutputSize;
 
-        anOutputTab = static_cast<uint8_t*>(malloc(sizeof(uint8_t) * anOutputSize));
+		if (ioOuputTab != nullptr)
+		{
+			anOutputTab = ioOuputTab;
+			isOutputTabOwned = false;
+		}
+		else
+		{
+			anOutputTab = static_cast<uint8_t*>(malloc(sizeof(uint8_t) * anOutputSize));
+		}
 
         inflate_data(aState, anOutputTab, anOutputSize);
         
         return anOutputTab;
     }
-    catch(exception::Exception& iException)
-    {
-        free(anOutputTab);
-        anOutputTab = nullptr;
-        ioOutputSize = 0;
-        
-        throw iException; // Rethrow exception
-    }
     catch(std::exception& iException)
     {
-        free(anOutputTab);
-        anOutputTab = nullptr;
-        ioOutputSize = 0;
-        
+        if (isOutputTabOwned)
+		{
+			free(anOutputTab);
+		}
         throw iException; // Rethrow exception
     }
 }
