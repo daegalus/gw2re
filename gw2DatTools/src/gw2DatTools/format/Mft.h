@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <vector>
 
+#include <memory>
+
 namespace gw2dt
 {
 namespace format

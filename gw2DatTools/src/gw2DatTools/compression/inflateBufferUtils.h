@@ -12,13 +12,19 @@ namespace compression
 
 static const uint32_t MaxCodeBitsLength = 32; // Max number of bits per code
 static const uint32_t MaxSymbolValue = 285;   // Max value for a symbol
+static const uint32_t MaxNbBitsHash = 8;
 
 struct HuffmanTree
 {
     uint32_t codeCompTab[MaxCodeBitsLength];
+	uint16_t symbolValueTabOffsetTab[MaxCodeBitsLength];
+    uint16_t symbolValueTab[MaxSymbolValue];
     uint8_t codeBitsTab[MaxCodeBitsLength];
-    uint16_t symbolValueTabOffsetTab[MaxCodeBitsLength];
-    uint32_t symbolValueTab[MaxSymbolValue];
+
+	int16_t symbolValueHashTab[1 << MaxNbBitsHash];
+	uint8_t codeBitsHashTab[1 << MaxNbBitsHash];
+
+	bool isEmpty;
 };
 
 struct State
@@ -73,7 +79,7 @@ inline void pullByte(State& ioState)
     }
     else
     {
-        ioState.head = ioState.head | (aValue >> (ioState.bits));
+        ioState.head |= (aValue >> (ioState.bits));
         ioState.buffer = (aValue << (32 - ioState.bits));
     }
 
@@ -117,8 +123,9 @@ inline void dropBits(State& ioState, const uint8_t iBits)
     }
     else
     {
-        ioState.head = ((ioState.head) << iBits) | ((ioState.buffer) >> (32 - iBits));
-        ioState.buffer = (ioState.buffer) << iBits;
+        ioState.head <<= iBits;
+		ioState.head |= (ioState.buffer) >> (32 - iBits);
+        ioState.buffer <<= iBits;
     }
 
     // update state info

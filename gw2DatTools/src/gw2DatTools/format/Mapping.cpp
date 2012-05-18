@@ -18,8 +18,6 @@ std::unique_ptr<Mapping> parseMapping(std::istream& iStream, const uint64_t& iOf
     std::unique_ptr<Mapping> pMapping(new Mapping());
     
     uint32_t aNbOfEntries = iSize / sizeof(MappingEntry);
-	std::cout << iSize << std::endl;
-	std::cout << aNbOfEntries << std::endl;
     
     pMapping->entries.resize(aNbOfEntries);
     readStructVect(iStream, pMapping->entries);

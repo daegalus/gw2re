@@ -11,37 +11,90 @@ namespace compression
 HuffmanTree HuffmanTreeDict;
 
 void readCode(const HuffmanTree& iHuffmanTree, State& ioState, uint16_t& ioCode)
-{
-    if (iHuffmanTree.codeCompTab[0] == 0)
-    {
-        throw exception::Exception("Trying to read code from an empty HuffmanTree.");
-    }
-    
-    needBits(ioState, 32);
-    uint16_t anIndex = 0;
-    while (readBits(ioState, 32) < iHuffmanTree.codeCompTab[anIndex])
-    {
-        ++anIndex;
-    }
+{    
+	if (iHuffmanTree.isEmpty)
+	{
+		throw exception::Exception("Trying to read code from an empty HuffmanTree.");
+	}
 
-    uint8_t aNbBits = iHuffmanTree.codeBitsTab[anIndex];
-    ioCode = iHuffmanTree.symbolValueTab[iHuffmanTree.symbolValueTabOffsetTab[anIndex] -
-                                         ((readBits(ioState, 32) - iHuffmanTree.codeCompTab[anIndex]) >> (32 - aNbBits))];
-    return dropBits(ioState, aNbBits);
+    needBits(ioState, 32);
+
+	if (iHuffmanTree.symbolValueHashTab[readBits(ioState, MaxNbBitsHash)] != -1)
+	{
+		ioCode = iHuffmanTree.symbolValueHashTab[readBits(ioState, MaxNbBitsHash)];
+		dropBits(ioState, iHuffmanTree.codeBitsHashTab[readBits(ioState, MaxNbBitsHash)]);
+	}
+	else
+	{
+		uint16_t anIndex = 0;
+		while (readBits(ioState, 32) < iHuffmanTree.codeCompTab[anIndex])
+		{
+			++anIndex;
+		}
+
+		uint8_t aNbBits = iHuffmanTree.codeBitsTab[anIndex];
+		ioCode = iHuffmanTree.symbolValueTab[iHuffmanTree.symbolValueTabOffsetTab[anIndex] -
+											 ((readBits(ioState, 32) - iHuffmanTree.codeCompTab[anIndex]) >> (32 - aNbBits))];
+		dropBits(ioState, aNbBits);
+	}
 }
 
 void buildHuffmanTree(HuffmanTree& ioHuffmanTree, int16_t* ioWorkingBitTab, int16_t* ioWorkingCodeTab)
 {
+	// Resetting Huffmantrees
+    memset(&ioHuffmanTree.codeCompTab, 0, sizeof(ioHuffmanTree.codeCompTab));
+	memset(&ioHuffmanTree.symbolValueTabOffsetTab, 0, sizeof(ioHuffmanTree.symbolValueTabOffsetTab));
+	memset(&ioHuffmanTree.symbolValueTab, 0, sizeof(ioHuffmanTree.symbolValueTab));
+	memset(&ioHuffmanTree.codeBitsTab, 0, sizeof(ioHuffmanTree.codeBitsTab));
+	memset(&ioHuffmanTree.codeBitsHashTab, 0, sizeof(ioHuffmanTree.codeBitsHashTab));
+
+	memset(&ioHuffmanTree.symbolValueHashTab, 0xFF, sizeof(ioHuffmanTree.symbolValueHashTab));
+	
+	ioHuffmanTree.isEmpty = true;
+
     // Building the HuffmanTree
     uint32_t aCode = 0;
     uint8_t aNbBits = 0;
-    uint16_t aCodeCompTabIndex = 0;
-    uint16_t aSymbolOffset = 0;
 
-    while (aNbBits < MaxCodeBitsLength)
+	// First part, filling hashTable for codes that are of less than 8 bits
+    while (aNbBits <= MaxNbBitsHash)
     {
         if (ioWorkingBitTab[aNbBits] != -1)
         {
+			ioHuffmanTree.isEmpty = false;
+
+            int16_t aCurrentSymbol = ioWorkingBitTab[aNbBits];
+            while (aCurrentSymbol != -1)
+            {
+				// Processing hash values
+				uint16_t aHashValue = aCode << (MaxNbBitsHash - aNbBits);
+				uint16_t aNextHashValue = (aCode + 1) << (MaxNbBitsHash - aNbBits);
+
+				while (aHashValue < aNextHashValue)
+				{
+					ioHuffmanTree.symbolValueHashTab[aHashValue] = aCurrentSymbol;
+					ioHuffmanTree.codeBitsHashTab[aHashValue] = aNbBits;
+					++aHashValue;
+				}
+
+                aCurrentSymbol = ioWorkingCodeTab[aCurrentSymbol];
+                --aCode;
+            }
+        }
+        aCode = (aCode << 1) + 1;
+        ++aNbBits;
+    }
+	
+	uint16_t aCodeCompTabIndex = 0;
+    uint16_t aSymbolOffset = 0;
+	
+	// Second part, filling classical structure for other codes
+	while (aNbBits < MaxCodeBitsLength)
+    {
+        if (ioWorkingBitTab[aNbBits] != -1)
+        {
+			ioHuffmanTree.isEmpty = false;
+
             int16_t aCurrentSymbol = ioWorkingBitTab[aNbBits];
             while (aCurrentSymbol != -1)
             {
@@ -122,7 +175,7 @@ void parseHuffmanTree(State& ioState, HuffmanTree& ioHuffmanTree)
         }
     }
 
-    // Effectively build the Huffmanree
+    // Effectively build the HuffmanTree
     return buildHuffmanTree(ioHuffmanTree, &aWorkingBitTab[0], &aWorkingCodeTab[0]);
 }
 

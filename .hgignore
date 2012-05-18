@@ -7,4 +7,4 @@ syntax: regexp
 # gw2DatTools
 ^gw2DatTools/bin
 ^gw2DatTools/(|example/)prj/(Debug|Release|ipch)/
-^gw2DatTools/(|example/)prj/.+?\.(user|sdf|suo|opensdf)
+^gw2DatTools/(|example/)prj/.+?\.(user|sdf|suo|opensdf|psess|vsp)

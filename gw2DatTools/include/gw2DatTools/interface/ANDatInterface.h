@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 #include "gw2DatTools/dllMacros.h"
 #include "gw2DatTools/format/FileType.h"

@@ -27,10 +27,6 @@ void inflate_data(State& ioState, uint8_t* ioOutputTab, const uint32_t iOutputSi
 
     while (anOutputPos < iOutputSize)
     {
-        // Resetting Huffmantrees
-        memset(&aHuffmanTreeSymbol, 0, sizeof(HuffmanTree));
-        memset(&aHuffmanTreeCopy, 0, sizeof(HuffmanTree));
-
         // Reading HuffmanTrees
         parseHuffmanTree(ioState, aHuffmanTreeSymbol);
         parseHuffmanTree(ioState, aHuffmanTreeCopy);
@@ -186,6 +182,14 @@ GW2DATTOOLS_API uint8_t* GW2DATTOOLS_APIENTRY inflateBuffer(uint8_t* iInputTab, 
         inflate_data(aState, anOutputTab, anOutputSize);
         
         return anOutputTab;
+    }
+	catch(exception::Exception& iException)
+    {
+        if (isOutputTabOwned)
+		{
+			free(anOutputTab);
+		}
+        throw iException; // Rethrow exception
     }
     catch(std::exception& iException)
     {
