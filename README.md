@@ -1,3 +1,7 @@
+Note: When cloning, make sure to do a recursive clone. Not doing this means you will not get any submodules.
+
+    git clone --recursive git://github.com/Daegalus/gw2re.git
+
 # Purpose
 This repo is intended to be used by the developers that wish to share and contribute to the reverse engineering of the GW2 DAT file and the contents within it.
 

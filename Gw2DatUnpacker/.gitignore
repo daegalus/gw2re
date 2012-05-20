@@ -1,0 +1,6 @@
+bin
+build
+prj/ipch
+prj/*.user
+prj/*.sdf
+prj/*.suo
