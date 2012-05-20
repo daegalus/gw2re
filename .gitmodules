@@ -1,0 +1,3 @@
+[submodule "Gw2Browser"]
+	path = Gw2Browser
+	url = git://github.com/rhoot/Gw2Browser.git
