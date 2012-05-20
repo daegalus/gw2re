@@ -1,3 +1,6 @@
 [submodule "Gw2Browser"]
 	path = Gw2Browser
 	url = git://github.com/rhoot/Gw2Browser.git
+[submodule "gw2DatTools"]
+	path = gw2DatTools
+	url = git://github.com/ahom/gw2DatTools.git
