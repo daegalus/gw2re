@@ -1,4 +1,4 @@
-local uint16 lPackFileLyoutInfosMemberType<hidden=true>;
+local uint16 lPackFileLayoutInfosMemberType<hidden=true>;
 struct PackFile(uint32 iOffset, uint32 iSize)
 {
     struct
@@ -64,22 +64,22 @@ struct PackFile(uint32 iOffset, uint32 iSize)
                             uint32 offsetToName;
                             FSeek(startof(offsetToName) + offsetToName);
                             string name;
-                            FSeek(startof(offsetToName) + 4);
+                            FSeek(startof(offsetToName) + sizeof(offsetToName));
                             uint32 offsetToSubStructure;
                             if (offsetToSubStructure != 0)
                             {
                                 FSeek(startof(offsetToSubStructure) + offsetToSubStructure);
                                 Structure subStructure;
-                                FSeek(startof(offsetToSubStructure) + 4);
+                                FSeek(startof(offsetToSubStructure) + sizeof(offsetToSubStructure));
                             }
                             uint32 size;
                         };
 
-                        lPackFileLyoutInfosMemberType = 1;
-                        while (lPackFileLyoutInfosMemberType != 0)
+                        lPackFileLayoutInfosMemberType = 1;
+                        while (lPackFileLayoutInfosMemberType != 0)
                         {
                             Member member;
-                            lPackFileLyoutInfosMemberType = member.type;
+                            lPackFileLayoutInfosMemberType = member.type;
                         }
                     };
                     
