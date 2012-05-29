@@ -1,0 +1,4 @@
+#include <PackFile.bt>
+
+FSeek(0);
+PackFile armf(0, FileSize());

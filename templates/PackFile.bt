@@ -1,0 +1,97 @@
+local uint16 lPackFileLyoutInfosMemberType<hidden=true>;
+struct PackFile(uint32 iOffset, uint32 iSize)
+{
+    struct
+    {
+        char   magic[2];
+        uint16 flags;
+        uint16 zero;
+        uint16 headerSize;
+        char   type[4];
+    } header;
+    
+    while (FTell() < iOffset + iSize)
+    {
+        struct
+        {
+            struct
+            {
+                char magic[4];
+                uint32 chunkSize;
+            
+                struct 
+                {
+                    uint16 version;
+                    uint16 headerSize;
+                    uint32 dataSize;
+                } chunkInfos;
+            } header;
+            
+            char data[header.chunkInfos.dataSize];
+            
+            struct
+            {
+                uint32 nbOfOffsets;
+                uint32 offsets[nbOfOffsets];
+            } offsetTable;
+            
+            if (parentof(chunk).header.flags == 0)
+            {
+                struct
+                {
+                    FSeek(startof(header.chunkInfos) + header.chunkSize - 16);
+                    struct
+                    {
+                        uint32 unknown1;
+                        uint32 offsetToLayoutInfosTable;
+                        uint16 unknown2;
+                        uint16 footerSize;
+                        char magic[4];
+                    } footer;
+
+                    FSeek(startof(data) + footer.offsetToLayoutInfosTable);
+                    
+                    uint32 zero;
+
+                    struct Structure;
+                    
+                    struct Structure
+                    {
+                        struct Member
+                        {
+                            uint16 type;
+                            uint16 flags;
+                            uint32 offsetToName;
+                            FSeek(startof(offsetToName) + offsetToName);
+                            string name;
+                            FSeek(startof(offsetToName) + 4);
+                            uint32 offsetToSubStructure;
+                            if (offsetToSubStructure != 0)
+                            {
+                                FSeek(startof(offsetToSubStructure) + offsetToSubStructure);
+                                Structure subStructure;
+                                FSeek(startof(offsetToSubStructure) + 4);
+                            }
+                            uint32 size;
+                        };
+
+                        lPackFileLyoutInfosMemberType = 1;
+                        while (lPackFileLyoutInfosMemberType != 0)
+                        {
+                            Member member;
+                            lPackFileLyoutInfosMemberType = member.type;
+                        }
+                    };
+                    
+                    Structure layoutInfos;
+                } layoutInfosTable;
+                FSeek(startof(header.chunkInfos) + header.chunkSize);
+            }
+
+            if ((FTell() - startof(chunk)) < (header.chunkSize + 8))
+            {
+                char unknown[header.chunkSize + 8 - (FTell() - startof(chunk))];
+            }
+        } chunk;
+    }
+};
