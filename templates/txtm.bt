@@ -1,0 +1,35 @@
+#include <FileReference.bt>
+#include <PackFile.bt>
+
+FSeek(0);
+PackFile txtmPackFile(0, FileSize());
+
+if (txtmPackFile.chunk.header.magic == "txtm")
+{
+    FSeek(startof(txtmPackFile.chunk.data));
+    struct
+    {
+        struct
+        {
+            uint32 stringsPerFile;
+            uint32 nbOfLanguages;
+            uint32 offsetToLanguages;
+        } header;
+
+        FSeek(startof(header.offsetToLanguages) + header.offsetToLanguages);
+        struct 
+        {
+            uint32 nbOfFileReferences;
+            uint32 offsetToOffsetsToFileReference;
+            FSeek(startof(offsetToOffsetsToFileReference) + offsetToOffsetsToFileReference);
+            struct
+            {
+                uint32 offsetToFileReference;
+                FSeek(startof(offsetToFileReference) + offsetToFileReference);
+                FileReference fileReference<read=readFileReference>;
+                FSeek(startof(offsetToFileReference) + sizeof(offsetToFileReference));
+            } fileReferences[nbOfFileReferences]<optimize=false>;
+            FSeek(startof(offsetToOffsetsToFileReference) + sizeof(offsetToOffsetsToFileReference));
+        } languages[header.nbOfLanguages]<optimize=false>;
+    } txtmChunk;
+}
