@@ -1,0 +1,24 @@
+#include <PackFile.bt>
+
+FSeek(0);
+PackFile txtvPackFile(0, FileSize());
+
+if (txtvPackFile.chunk.header.magic == "txtv")
+{
+    FSeek(startof(txtvPackFile.chunk.data));
+    struct
+    {
+        struct
+        {
+            uint32 nbOfRecords;
+            uint32 offsetToRecords;
+        } header;
+
+        FSeek(startof(header.offsetToRecords) + header.offsetToRecords);
+        struct 
+        {
+            uint32 textId;
+            uint32 unknownTextId;
+        } record[header.nbOfRecords];
+    } txtvChunk;
+}
