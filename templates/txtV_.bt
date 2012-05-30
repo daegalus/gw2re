@@ -23,6 +23,6 @@ if (txtVPackFile.chunk.header.magic == "vari")
             FSeek(startof(offsetToFileIds) + offsetToFileIds);
             uint32 fileId[nbOfFileIds];
             FSeek(startof(offsetToFileIds) + sizeof(offsetToFileIds));
-        } record[header.nbOfRecords]<optimize=false>;
+        } records[header.nbOfRecords]<optimize=false>;
     } txtVChunk;
 }

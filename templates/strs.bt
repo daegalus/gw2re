@@ -1,0 +1,23 @@
+struct
+{
+    char magic[4];
+    struct
+    {
+        uint16 dataSize;
+        uint16 decryptOffset;
+        uint16 decryptBits;
+        if (dataSize > 6)
+        {
+            if (decryptOffset == 0 && decryptBits == 0x10)
+            {
+                wchar_t value[(dataSize - 6) / 2];
+            }
+            else
+            {
+                ubyte value[dataSize - 6];
+            }
+        }
+    } strs[1024]<optimize=false>;
+    ubyte languageId;
+    ubyte ordinal;
+} strsFile;

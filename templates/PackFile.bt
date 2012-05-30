@@ -23,17 +23,23 @@ struct PackFile(uint32 iOffset, uint32 iSize)
                 {
                     uint16 version;
                     uint16 headerSize;
-                    uint32 dataSize;
+                    uint32 offsetToOffsetTable;
                 } chunkInfos;
             } header;
-            
-            char data[header.chunkInfos.dataSize];
-            
-            struct
+
+            if (header.chunkInfos.offsetToOffsetTable != 0)
             {
-                uint32 nbOfOffsets;
-                uint32 offsets[nbOfOffsets];
-            } offsetTable;
+                ubyte data[header.chunkInfos.offsetToOffsetTable];
+                struct
+                {
+                    uint32 nbOfOffsets;
+                    uint32 offsets[nbOfOffsets];
+                } offsetTable;
+            }
+            else
+            {
+                ubyte data[header.chunkInfos.chunkSize - 8];
+            }
             
             if (parentof(chunk).header.flags == 0)
             {
@@ -78,8 +84,8 @@ struct PackFile(uint32 iOffset, uint32 iSize)
                         lPackFileLayoutInfosMemberType = 1;
                         while (lPackFileLayoutInfosMemberType != 0)
                         {
-                            Member member;
-                            lPackFileLayoutInfosMemberType = member.type;
+                            Member members;
+                            lPackFileLayoutInfosMemberType = members.type;
                         }
                     };
                     
@@ -90,8 +96,23 @@ struct PackFile(uint32 iOffset, uint32 iSize)
 
             if ((FTell() - startof(chunk)) < (header.chunkSize + 8))
             {
-                char unknown[header.chunkSize + 8 - (FTell() - startof(chunk))];
+                ubyte unknown[header.chunkSize + 8 - (FTell() - startof(chunk))];
             }
         } chunk;
     }
 };
+
+local uint32 lPackFileLoopIndex;
+void highlightOffsets(const PackFile& iPackFile)
+{
+    lPackFileLoopIndex = 0;
+    SetBackColor(cLtAqua);
+    while (lPackFileLoopIndex < iPackFile.chunk.offsetTable.nbOfOffsets)
+    {
+        FSeek(startof(iPackFile.chunk.data) + iPackFile.chunk.offsetTable.offsets[lPackFileLoopIndex]);
+        
+        uint32 highlightedOffsets;   
+        lPackFileLoopIndex = lPackFileLoopIndex + 1;
+    }    
+    SetBackColor(cNone);
+}

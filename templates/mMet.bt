@@ -1,11 +1,11 @@
 #include <PackFile.bt>
 
 FSeek(0);
-PackFile txtvPackFile(0, FileSize());
+PackFile mMetPackFile(0, FileSize());
 
-if (txtvPackFile.chunk.header.magic == "txtv")
+if (mMetPackFile.chunk.header.magic == "Main")
 {
-    FSeek(startof(txtvPackFile.chunk.data));
+    FSeek(startof(mMetPackFile.chunk.data));
     struct
     {
         struct
@@ -17,8 +17,8 @@ if (txtvPackFile.chunk.header.magic == "txtv")
         FSeek(startof(header.offsetToRecords) + header.offsetToRecords);
         struct 
         {
-            uint32 textId;
-            uint32 unknownTextId;
-        } records[header.nbOfRecords];
-    } txtvChunk;
+            uint16 unknownValue;
+            ubyte unknownFlag;
+        } records[header.nbOfRecords]<optimize=false>;
+    } MainChunk;
 }
