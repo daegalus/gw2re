@@ -102,7 +102,7 @@ struct PackFile(uint32 iOffset, uint32 iSize)
     }
 };
 
-local uint32 lPackFileLoopIndex;
+local uint32 lPackFileLoopIndex<hidden=true>;
 void highlightOffsets(const PackFile& iPackFile)
 {
     lPackFileLoopIndex = 0;
