@@ -4,3 +4,6 @@
 [submodule "gw2DatTools"]
 	path = gw2DatTools
 	url = git://github.com/ahom/gw2DatTools.git
+[submodule "gw2formats"]
+	path = gw2formats
+	url = git://github.com/rhoot/gw2formats.git
